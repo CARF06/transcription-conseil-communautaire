@@ -1,0 +1,18 @@
+# Jeton Hugging Face : ne JAMAIS publier
+hf_token.txt
+.env
+
+# Environnement Python et caches
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Données de séance : audio, caches et transcriptions (restent sur OneDrive)
+travail_transcription/
+Conseil*/
+*.mp3
+*.wav
+*.docx
+*.txt
+!requirements.txt

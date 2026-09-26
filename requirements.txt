@@ -1,0 +1,5 @@
+yt-dlp
+mlx-whisper
+faster-whisper
+pyannote.audio
+python-docx
