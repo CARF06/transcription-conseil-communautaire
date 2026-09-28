@@ -11,7 +11,7 @@ horodatés, avec les noms des élus.
 
 ```bash
 pip install -r requirements.txt
-python transcription_conseil.py "URL_YOUTUBE" --intervenants 12 --modele large-v3 --nom "Conseil AAAA-MM-JJ"
+python transcription_conseil.py "URL_YOUTUBE" --intervenants 12 --modele large-v3 --nom "Conseil JJ-MM-AAAA"
 ```
 
 - Installation, jeton Hugging Face et dépannage : [GUIDE_INSTALLATION.md](GUIDE_INSTALLATION.md)

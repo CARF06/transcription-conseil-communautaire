@@ -9,14 +9,14 @@ pour le détail. Commande type :
 cd ~/Claude/Projects/"Rapport du Conseil Com"
 source venv/bin/activate
 export HF_TOKEN=hf_xxx   # jeton personnel, à exporter à chaque session shell
-python transcription_conseil.py "URL_YOUTUBE" --intervenants 12 --modele large-v3 --nom "Conseil AAAA-MM-JJ"
+python transcription_conseil.py "URL_YOUTUBE" --intervenants 12 --modele large-v3 --nom "Conseil JJ-MM-AAAA"
 ```
 
 ## Quand Alex donne juste une URL YouTube : tout faire de bout en bout
 1. Date de la séance : `yt-dlp --print "%(title)s | %(upload_date)s" URL`, puis
-   confirmer avec l'appel nominal du début. Dossier `Conseil AAAA-MM-JJ`.
+   confirmer avec l'appel nominal du début. Dossier `Conseil JJ-MM-AAAA`.
 2. Lancer en arrière-plan (environ 1× la durée de la vidéo avec mlx) :
-   `python transcription_conseil.py URL --intervenants 12 --modele large-v3 --nom "Conseil AAAA-MM-JJ"`.
+   `python transcription_conseil.py URL --intervenants 12 --modele large-v3 --nom "Conseil JJ-MM-AAAA"`.
    Le jeton HF est lu automatiquement : variable HF_TOKEN, sinon `hf auth login`
    (~/.cache/huggingface/token), sinon `hf_token.txt` dans le dossier projet.
    Ne jamais le demander ni le recopier dans ce fichier.
@@ -38,9 +38,11 @@ macOS ou une session Claude Code locale — pas via l'exécution à distance
 d'une session Cowork cloud.
 
 ## Convention de nommage
-Un dossier par séance : `Conseil AAAA-MM-JJ` (date de la séance, pas de la
-vidéo). Voir `Conseil 2026-06 test/` (extrait de test) et
-`Conseil 2026-07-30/` (séance complète) comme exemples.
+Date **toujours au format français JJ-MM-AAAA** (demande d'Alex). Un dossier
+par séance : `Conseil JJ-MM-AAAA` (date de la séance, pas de la vidéo). Les
+fichiers s'appellent `Transcription du conseil communautaire du JJ-MM-AAAA.docx`
+(et `.txt`). Le script convertit tout seul un `--nom` donné en AAAA-MM-JJ. Voir `Conseil 06-2026 test/` (extrait de test) et
+`Conseil 30-07-2026/` (séance complète) comme exemples.
 
 ## Élus déjà identifiés (à réutiliser, pas à re-découvrir)
 ⚠️ Les étiquettes `SPEAKER_00`, `SPEAKER_01`... ne sont **pas stables** d'une
@@ -103,16 +105,15 @@ Florent CHAMPION a été secrétaire de séance lors des deux dernières séance
 (rôle qui peut tourner d'une séance à l'autre — à confirmer à chaque fois).
 
 ### Reste à faire
-Séance du 25 septembre 2026 (`Conseil 2026-09-25/`, vidéo O4W3nYsIDZg) :
+Séance du 25 septembre 2026 (`Conseil 25-09-2026/`, vidéo O4W3nYsIDZg) :
 audio stéréo en opposition de phase (le script ne garde plus que le canal
 gauche dans ce cas). 10 locuteurs sur 12 ont été nommés d'après le contenu.
 Reste : SPEAKER_02 regroupe plusieurs voix (D. Brouste, G. Spinelli,
 J. Pastorelli, services) et devra être découpé à l'oreille. SPEAKER_05 est
-inconnu et SPEAKER_00 (OUDOT, RH) est à confirmer. Les dossiers
-`Conseil 25-09-2026*` sont d'anciens essais vides.
+inconnu et SPEAKER_00 (OUDOT, RH) est à confirmer.
 
 Sur la séance du 30 juillet, 8 locuteurs sur 11 (SPEAKER_00, 01, 02, 05 à 09)
-restent encore à nommer dans `Conseil 2026-07-30/intervenants.txt`.
+restent encore à nommer dans `Conseil 30-07-2026/intervenants.txt`.
 
 Appel nominal reconstitué (début de cette séance, noms corrigés d'après la
 liste officielle ci-dessus — indique qui était présent/excusé, pas quel

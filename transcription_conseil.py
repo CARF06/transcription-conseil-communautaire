@@ -347,6 +347,19 @@ def exporter_texte(segments, noms, sortie: Path, titre: str):
     sortie.write_text("\n".join(lignes), encoding="utf-8")
 
 
+def date_francaise(nom: str) -> str:
+    """Convertit une date AAAA-MM-JJ du nom de séance au format JJ-MM-AAAA."""
+    return re.sub(r"(\d{4})-(\d{2})-(\d{2})", r"\3-\2-\1", nom)
+
+
+def nom_fichier_sortie(nom_seance: str) -> str:
+    """« Transcription du conseil communautaire du JJ-MM-AAAA » si le nom de
+    séance contient une date, sinon « transcription »."""
+    m = re.search(r"\d{2}-\d{2}-\d{4}", nom_seance)
+    return (f"Transcription du conseil communautaire du {m.group(0)}"
+            if m else "transcription")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Transcription + diarisation d'un conseil")
     ap.add_argument("source", help="URL YouTube ou fichier audio local")
@@ -361,7 +374,7 @@ def main():
                          "Apple) s'il est installé, sinon faster-whisper (CPU)")
     ap.add_argument("--nom", default=None,
                     help="Nom lisible de la séance, utilisé comme dossier de "
-                         "sortie (ex: \"Conseil 2026-06-17\"). "
+                         "sortie (ex: \"Conseil 17-06-2026\", date au format JJ-MM-AAAA). "
                          "Défaut : identifiant de la vidéo.")
     ap.add_argument("--recalculer", action="store_true",
                     help="Ignorer le cache et retraiter l'audio")
@@ -373,7 +386,8 @@ def main():
     dossier.mkdir(parents=True, exist_ok=True)
 
     # Dossier de sortie : un par conseil, au nom lisible
-    dossier_sortie = Path(args.nom) if args.nom else Path(f"Conseil_{seance}")
+    dossier_sortie = Path(date_francaise(args.nom)) if args.nom \
+        else Path(f"Conseil_{seance}")
     dossier_sortie.mkdir(parents=True, exist_ok=True)
 
     parametres = {"source": args.source, "duree": args.duree,
@@ -448,8 +462,9 @@ def main():
     noms = charger_noms(fichier_noms)
     titre = f"{dossier_sortie.name} — Transcription " \
             f"(générée le {datetime.now():%d/%m/%Y})"
-    sortie_docx = dossier_sortie / "transcription.docx"
-    sortie_txt = dossier_sortie / "transcription.txt"
+    base = nom_fichier_sortie(dossier_sortie.name)
+    sortie_docx = dossier_sortie / f"{base}.docx"
+    sortie_txt = dossier_sortie / f"{base}.txt"
     exporter_word(segments, noms, sortie_docx, titre)
     exporter_texte(segments, noms, sortie_txt, titre)
     print(f"✅ Documents générés : {sortie_docx} et {sortie_txt}")
